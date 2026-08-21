@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", sans-serif;
+  --font-display: "Sora", sans-serif;
+  
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #b9e6fe;
+  --color-primary-300: #7cd3fd;
+  --color-primary-400: #38c8f8;
+  --color-primary-500: #1ca1df;
+  --color-primary-600: #0b80ba;
+  --color-primary-700: #0a6696;
+  --color-primary-800: #114765;
+  --color-primary-900: #0b2e44;
+  --color-primary-950: #051a26;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .clip-path-reveal {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+

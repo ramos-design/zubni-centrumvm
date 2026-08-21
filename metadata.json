@@ -1,0 +1,6 @@
+{
+  "name": "Zubní Centrum Valašské Meziříčí",
+  "description": "Moderní webdesign pro zubní centrum ve Valašském Meziříčí.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
