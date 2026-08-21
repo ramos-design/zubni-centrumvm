@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -29,6 +29,12 @@ export default function Footer() {
               info@zubnicentrum-vm.cz
               <div className="w-10 h-10 rounded-full border border-slate-700 group-hover:border-primary-400 flex items-center justify-center transition-colors">
                 <ArrowUpRight className="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-all group-hover:rotate-45" />
+              </div>
+            </a>
+            <a href="tel:+420608890030" className="group inline-flex items-center gap-4 mt-4 text-2xl md:text-3xl font-display font-medium text-white hover:text-primary-400 transition-colors">
+              +420 608 890 030
+              <div className="w-10 h-10 rounded-full border border-slate-700 group-hover:border-primary-400 flex items-center justify-center transition-colors">
+                <Phone className="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" />
               </div>
             </a>
           </div>
