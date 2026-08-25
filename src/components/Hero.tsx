@@ -59,7 +59,7 @@ export default function Hero() {
         />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full mt-10 md:mt-0 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full mt-10 md:mt-0 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-20 lg:gap-12">
         <div className="max-w-3xl w-full">
           <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem] font-display font-semibold text-primary-950 leading-[1.05] mb-6 tracking-tight">
             <div className="overflow-hidden pb-2 -mb-2">
@@ -120,7 +120,7 @@ export default function Hero() {
         </div>
 
         {/* Animated Carousel UI Elements */}
-        <div className="hidden md:flex flex-col gap-4 h-[340px] justify-end pb-2 relative w-[280px] shrink-0">
+        <div className="flex flex-col gap-4 h-[300px] md:h-[340px] justify-end pb-2 relative w-full max-w-[280px] md:w-[280px] shrink-0">
           <AnimatePresence mode="popLayout">
             {visibleFeatures.map((feature) => (
               <motion.div 
@@ -152,7 +152,7 @@ export default function Hero() {
                   ease: SLIDE_EASE,
                   opacity: { delay: 0.5, duration: 0.35, ease: 'easeOut' },
                 }}
-                className="morphglass morphglass-hover p-5 rounded-3xl w-[280px] flex items-center gap-4 shrink-0"
+                className="morphglass morphglass-hover p-5 rounded-3xl w-full flex items-center gap-4 shrink-0"
               >
                 <div className="morphglass-well w-12 h-12 rounded-full text-primary-600 flex items-center justify-center shrink-0">
                   <feature.icon className="w-6 h-6" />

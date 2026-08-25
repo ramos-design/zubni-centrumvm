@@ -7,8 +7,9 @@ import Expertise from './Expertise';
 import Contact from './Contact';
 import Footer from './Footer';
 
-/* Verze 3 — hranaté okraje jako verze 2, hero má jen dva boxy a pozadí se mění s nimi. */
-export default function PageV3() {
+/* Verze 4 — jako verze 3, ale v hero stojí vpravo dvojice zubařů (průhledné
+   PNG) a vedle nich se střídá vždy jen jeden box. */
+export default function PageV4() {
   return (
     <div className="min-h-screen bg-slate-50 selection:bg-primary-200 selection:text-primary-900 font-sans text-slate-800">
       <Navbar />

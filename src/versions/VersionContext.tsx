@@ -19,6 +19,7 @@ export const VERSIONS: VersionMeta[] = [
   { id: 'v1', label: 'Verze 1', description: 'Zaoblený design' },
   { id: 'v2', label: 'Verze 2', description: 'Ostré hrany' },
   { id: 'v3', label: 'Verze 3', description: 'Hero: 2 boxy + měnící se fotky' },
+  { id: 'v4', label: 'Verze 4', description: 'Hero: 2 zubaři + jeden box' },
 ];
 
 export const DEFAULT_VERSION: VersionId = VERSIONS[0].id;

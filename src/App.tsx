@@ -2,12 +2,14 @@ import type { ComponentType } from 'react';
 import PageV1 from './versions/v1/Page';
 import PageV2 from './versions/v2/Page';
 import PageV3 from './versions/v3/Page';
+import PageV4 from './versions/v4/Page';
 import { VersionProvider, useVersion } from './versions/VersionContext';
 
 const PAGES: Record<string, ComponentType> = {
   v1: PageV1,
   v2: PageV2,
   v3: PageV3,
+  v4: PageV4,
 };
 
 function ActiveVersion() {
