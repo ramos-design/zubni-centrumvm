@@ -209,14 +209,20 @@ export default function Hero() {
 
       {/* ── Desktop (lg+): zubaři jsou samostatná vrstva kotvená ke spodní hraně
            sekce, ne sloupec v gridu. Jen tak můžou být ~2× větší, aniž by
-           roztáhli obsah nebo ukrojili šířku nadpisu. Karta visí na jejich
-           levém okraji, takže přes ně vždycky kousek přesahuje. ───────────── */}
+           roztáhli obsah nebo ukrojili šířku nadpisu. ──────────────────────── */}
       <div className="hidden lg:block absolute bottom-0 right-[1%] xl:right-[4%] h-[64vh] xl:h-[72vh] aspect-[1038/1016] z-10">
         {hasCutout ? <Dentists y={yDentists} onError={() => setHasCutout(false)} /> : <CutoutPlaceholder />}
+      </div>
 
-        {/* -translate-x-[62%] = 38 % šířky karty leží přes dvojici. */}
-        <div className="absolute bottom-[38%] left-0 -translate-x-[62%] w-[300px] z-20">
-          <SlideCard slide={slide} />
+      {/* ── Karta má vlastní vrstvu zarovnanou na pravý okraj obsahové mřížky
+           sekce (stejný max-w-7xl + padding jako text), takže lícuje s okrajem
+           sekce a klidně překrývá dvojici zubařů. Výška vrstvy je stejná jako
+           u zubařů, aby bottom-[38%] sedělo na původní úrovni. ───────────── */}
+      <div className="hidden lg:block absolute bottom-0 inset-x-0 h-[64vh] xl:h-[72vh] z-30 pointer-events-none">
+        <div className="max-w-7xl mx-auto h-full relative">
+          <div className="absolute bottom-[38%] right-4 sm:right-6 lg:right-8 w-[300px] pointer-events-auto">
+            <SlideCard slide={slide} />
+          </div>
         </div>
       </div>
 

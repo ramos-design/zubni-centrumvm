@@ -100,6 +100,43 @@
       0 6px 16px -6px rgba(5, 26, 38, 0.11);
   }
 
+  /* Mléčná varianta .morphglass — sklo je hustší a bělejší, aby tmavý text
+     držel kontrast i nad fotkou. Vrstvy jsou stejné jako v základu, jen mají
+     vyšší krytí; saturace v backdrop-filtru jde naopak dolů, protože nad
+     bělejším podkladem by prosvítající barvy fotky působily špinavě. */
+  .morphglass-milk {
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.62) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.88) 0%,
+        rgba(255, 255, 255, 0.76) 45%,
+        rgba(240, 249, 255, 0.7) 100%
+      );
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+  }
+
+  /* Musí přebít .morphglass-hover:hover, které má vyšší specificitu. */
+  .morphglass-milk.morphglass-hover:hover {
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.72) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.86) 45%,
+        rgba(240, 249, 255, 0.8) 100%
+      );
+  }
+
   /* inner element (icon well) — reads as thicker, domed glass */
   .morphglass-well {
     background: linear-gradient(

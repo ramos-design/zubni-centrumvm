@@ -7,19 +7,14 @@ const easeOutQuint = [0.22, 1, 0.36, 1];
 // distance in the first third, which reads as a jerk followed by a crawl.
 const SLIDE_EASE = [0.45, 0, 0.15, 1];
 
-/* Verze 3 — pomalejší karusel: tři boxy nad sebou, barevně stejné jako ve
-   verzi 2, horní je ostrý a spodní dva jsou čím níž, tím rozmazanější. S každým
-   přehozením se vymění i fotka na pozadí celé hero sekce. */
+/* Verze 3 — pomalejší karusel: v jednu chvíli je vidět vždy jen jeden box.
+   Sedí vpravo a spodní hranou je zarovnaný na řádek s CTA tlačítky vlevo.
+   S každým přehozením se vymění i fotka na pozadí celé hero sekce. */
 const SLIDE_INTERVAL = 6000;
 
-// Hloubka podle slotu: shora dolů ubývá krytí a přibývá rozostření, aby
-// spodní boxy vypadaly, že se teprve tlačí dopředu. Scale je držené jemné —
-// rozestup mezi kartami má zůstat stejný jako ve verzi 1 a 2.
-const DEPTH = [
-  { opacity: 1, blur: 0, scale: 1 },
-  { opacity: 0.78, blur: 3, scale: 0.98 },
-  { opacity: 0.5, blur: 6.5, scale: 0.955 },
-];
+// Výška jednoho boxu (p-5 + ikona 48 px). Drží se pevně, aby se sloupec při
+// výměně karty nehýbal a zůstal zarovnaný na CTA.
+const CARD_HEIGHT = 88;
 
 // Fotka se prolíná ~1,6 s a celou dobu, co je vidět, pomalu vyjíždí ze
 // zvětšení zpátky na 1 (Ken Burns). Doba zoomu je delší než interval, aby se
@@ -88,12 +83,7 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, []);
 
-  // Nahoře aktuální box, pod ním dva další, které se teprve derou nahoru.
-  const visibleSlides = [
-    SLIDES[index],
-    SLIDES[(index + 1) % SLIDES.length],
-    SLIDES[(index + 2) % SLIDES.length],
-  ];
+  const slide = SLIDES[index];
 
   return (
     <section ref={containerRef} className="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden bg-white">
@@ -194,68 +184,48 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Tři boxy nad sebou ve stejném rozestupu jako ve verzi 1 a 2.
-            Barevně jsou všechny stejné jako ve verzi 2 (čiré morphglass sklo);
-            odlišuje je jen hloubka — horní je ostrý, ty pod ním jsou čím níž,
-            tím rozmazanější a slabší. */}
-        <div className="flex flex-col gap-4 h-[300px] md:h-[340px] justify-end pb-2 relative w-full max-w-[280px] md:w-[280px] shrink-0">
-          <AnimatePresence mode="popLayout">
-            {visibleSlides.map((slide, position) => {
-              const depth = DEPTH[position] ?? DEPTH[DEPTH.length - 1];
-              return (
-                <motion.div
-                  layout="position"
-                  key={slide.id}
-                  initial={{ opacity: 0, y: 40, scale: 0.94, filter: 'blur(10px)' }}
-                  animate={{
-                    opacity: depth.opacity,
-                    y: 0,
-                    scale: depth.scale,
-                    filter: `blur(${depth.blur}px)`,
-                  }}
-                  // The card below slides up into this one's slot, so the two
-                  // overlap — and because the panels are translucent, the leaving
-                  // card's 1px bottom edge stays readable *through* the arriving
-                  // one and sweeps across it as a hairline.
-                  //
-                  // The exit therefore has to outrun the arrival: 80px on easeOut
-                  // in 0.45s stays ahead of 108px on SLIDE_EASE in 0.85s for the
-                  // whole time it is visible, so the two never share space while
-                  // the leaving card still has any opacity left.
-                  exit={{
-                    opacity: 0,
-                    y: -80,
-                    scale: 0.98,
-                    filter: 'blur(8px)',
-                    transition: { duration: 0.45, ease: 'easeOut' },
-                  }}
-                  // The arriving card is laid out in the bottom slot straight
-                  // away, while the card that currently occupies that slot is
-                  // still sliding out of it. Through translucent panels its top
-                  // edge is readable and sweeps across its neighbour as a band,
-                  // so its opacity is held back until the slot is nearly free.
-                  transition={{
-                    duration: 0.85,
-                    ease: SLIDE_EASE,
-                    opacity: { delay: 0.5, duration: 0.35, ease: 'easeOut' },
-                    filter: { duration: 0.8, ease: 'easeOut' },
-                  }}
-                  className="morphglass morphglass-hover p-5 rounded-md w-full flex items-center gap-4 shrink-0"
-                >
-                  <div className="morphglass-well w-12 h-12 rounded-sm text-primary-600 flex items-center justify-center shrink-0">
-                    <slide.icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-600/90 font-display mb-0.5">
-                      {slide.label}
-                    </div>
-                    <div className="text-sm font-semibold text-primary-950 leading-tight font-display">
-                      {slide.title}<br />{slide.subtitle}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+        {/* Karusel: vždy jen jeden box. Sloupec má pevnou výšku jedné karty
+            a rodič je lg:items-end, takže spodní hrana boxu sedí přesně na
+            spodní hraně CTA tlačítek vlevo. */}
+        <div
+          className="relative w-full max-w-[280px] md:w-[280px] shrink-0"
+          style={{ height: CARD_HEIGHT }}
+        >
+          {/* mode="wait" — panely jsou průsvitné, takže překryv dvou karet by
+              prosvítal skrz. Odcházející se nejdřív uklidí, teprve pak
+              nastupuje další. */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slide.id}
+              initial={{ opacity: 0, y: 34, scale: 0.96, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+              exit={{
+                opacity: 0,
+                y: -34,
+                scale: 0.96,
+                filter: 'blur(10px)',
+                transition: { duration: 0.45, ease: 'easeIn' },
+              }}
+              transition={{
+                duration: 0.85,
+                ease: SLIDE_EASE,
+                opacity: { duration: 0.5, ease: 'easeOut' },
+                filter: { duration: 0.7, ease: 'easeOut' },
+              }}
+              className="morphglass morphglass-milk morphglass-hover p-5 rounded-md absolute inset-0 flex items-center gap-4"
+            >
+              <div className="morphglass-well w-12 h-12 rounded-sm text-primary-600 flex items-center justify-center shrink-0">
+                <slide.icon className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-600/90 font-display mb-0.5">
+                  {slide.label}
+                </div>
+                <div className="text-sm font-semibold text-primary-950 leading-tight font-display">
+                  {slide.title}<br />{slide.subtitle}
+                </div>
+              </div>
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>
