@@ -69,7 +69,7 @@ export default function Contact() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <a href="tel:+420608890030" className="group inline-flex items-center gap-4 md:gap-6">
-              <div className="w-10 h-10 md:w-16 md:h-16 rounded-full border-2 border-primary-950 group-hover:border-primary-600 flex items-center justify-center transition-colors shrink-0">
+              <div className="w-10 h-10 md:w-16 md:h-16 rounded-sm border-2 border-primary-950 group-hover:border-primary-600 flex items-center justify-center transition-colors shrink-0">
                 <Phone className="w-5 h-5 md:w-8 md:h-8 text-primary-950 group-hover:text-primary-600 transition-colors" />
               </div>
               <span className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-primary-950 group-hover:text-primary-600 transition-colors">
@@ -180,20 +180,20 @@ export default function Contact() {
                 href="https://maps.google.com/?q=Křižná+857,+757+01+Valašské+Meziříčí" 
                 target="_blank" 
                 rel="noreferrer"
-                className="morphglass-btn inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-full text-sm font-semibold text-primary-700 mb-12 ml-10"
+                className="morphglass-btn inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-sm text-sm font-semibold text-primary-700 mb-12 ml-10"
               >
                 Otevřít v mapách
                 <ArrowUpRight className="w-4 h-4" />
               </a>
               
               {/* Photo */}
-              <div className="rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 w-full max-w-sm relative">
+              <div className="rounded-md overflow-hidden aspect-[16/10] bg-slate-100 w-full max-w-sm relative">
                   <img 
                     src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" 
                     alt="Budova Zubního centra" 
                     className="w-full h-full object-cover grayscale opacity-80" 
                   />
-                  <div className="absolute inset-0 border border-slate-900/5 rounded-2xl pointer-events-none"></div>
+                  <div className="absolute inset-0 border border-slate-900/5 rounded-md pointer-events-none"></div>
               </div>
             </motion.div>
             
@@ -202,7 +202,7 @@ export default function Contact() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-7 h-full min-h-[400px] w-full rounded-3xl overflow-hidden relative border border-slate-200/60 bg-slate-100"
+              className="lg:col-span-7 h-full min-h-[400px] w-full rounded-md overflow-hidden relative border border-slate-200/60 bg-slate-100"
             >
                <iframe 
                  title="Mapa ordinace"

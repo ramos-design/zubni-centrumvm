@@ -1,7 +1,7 @@
 import { Phone, Menu, X, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import VersionSwitcher from './VersionSwitcher';
+import VersionSwitcher from '../../components/VersionSwitcher';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

@@ -27,3 +27,310 @@
   }
 }
 
+
+/* ── Morphglass ─────────────────────────────────────────────
+   Frosted panel: translucent gradient fill + saturated backdrop blur, edged by
+   a lit top highlight and a faint neutral outline.
+
+   Every edge here is deliberately neutral in hue. A saturated 1px edge (this
+   had a cyan `inset -1px -1px` to suggest refraction) reads as a coloured
+   stripe against the desaturated photo behind the cards, and because the cards
+   land on fractional pixel positions it is antialiased across two device rows
+   — so it also shimmers whenever they move.
+
+   Everything is painted by the element itself — background layers and inset
+   shadows, no pseudo-elements. An earlier version drew the edge as a 1px
+   mask-composite ring in ::before, which is a separate paint layer: while the
+   card animates it lands on different subpixel boundaries than the card's own
+   background and flashes a hairline along an edge. Inset shadows rasterise
+   together with the background, so the edge cannot drift out of register.
+
+   transform is also deliberately absent from the transition — Motion writes
+   transform every frame, and a CSS transition would re-interpolate each write
+   and turn a smooth slide into stutter. Hover is paint-only. */
+@layer utilities {
+  .morphglass {
+    position: relative;
+    background:
+      /* specular sheen pooling in the top-left corner */
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      /* the glass itself */
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.27) 45%,
+        rgba(240, 249, 255, 0.17) 100%
+      );
+    -webkit-backdrop-filter: blur(18px) saturate(190%);
+    backdrop-filter: blur(18px) saturate(190%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 10px rgba(11, 128, 186, 0.06),
+      0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 18px 40px -12px rgba(5, 26, 38, 0.2),
+      0 4px 12px -4px rgba(5, 26, 38, 0.09);
+    transition:
+      background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* paint-only hover: the glass thickens, it does not move */
+  .morphglass-hover:hover {
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.64) 0%,
+        rgba(255, 255, 255, 0.4) 45%,
+        rgba(240, 249, 255, 0.28) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -1px 12px rgba(11, 128, 186, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.24),
+      0 26px 52px -14px rgba(5, 26, 38, 0.26),
+      0 6px 16px -6px rgba(5, 26, 38, 0.11);
+  }
+
+  /* inner element (icon well) — reads as thicker, domed glass */
+  .morphglass-well {
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.74) 0%,
+      rgba(224, 242, 254, 0.44) 100%
+    );
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    backdrop-filter: blur(8px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -2px 6px rgba(11, 128, 186, 0.13),
+      0 4px 10px -3px rgba(11, 128, 186, 0.2);
+    transition:
+      background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Zvýrazněný panel: stejná optika jako .morphglass, jen sklo obarvené do
+     značkové modré. Odstín je držený ve světlé části palety (primary-200 až
+     -600) schválně — panel stojí nad fotkou, která pod ním může být tmavá, a
+     tmavší tint by srazil kontrast tmavě modrého textu pod čitelnou mez.
+
+     Vrstvy gradientů mají stejnou strukturu i počet zarážek jako .morphglass,
+     takže když karta v karuselu přepne třídu, prohlížeč mezi oběma pozadími
+     plynule přejede místo skoku. */
+  .morphglass-primary {
+    position: relative;
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(185, 230, 254, 0.72) 0%,
+        rgba(56, 200, 248, 0.56) 45%,
+        rgba(28, 161, 223, 0.5) 100%
+      );
+    -webkit-backdrop-filter: blur(18px) saturate(190%);
+    backdrop-filter: blur(18px) saturate(190%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.62),
+      inset 0 -1px 12px rgba(11, 128, 186, 0.16),
+      0 0 0 1px rgba(255, 255, 255, 0.22),
+      0 18px 40px -12px rgba(11, 128, 186, 0.4),
+      0 4px 12px -4px rgba(5, 26, 38, 0.12);
+    transition:
+      background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .morphglass-primary:hover {
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.66) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(185, 230, 254, 0.82) 0%,
+        rgba(56, 200, 248, 0.66) 45%,
+        rgba(28, 161, 223, 0.6) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.78),
+      inset 0 -1px 14px rgba(11, 128, 186, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.3),
+      0 26px 52px -14px rgba(11, 128, 186, 0.46),
+      0 6px 16px -6px rgba(5, 26, 38, 0.14);
+  }
+
+  /* Důlek pro ikonu na modrém panelu — plná značková modrá, aby bílá ikona
+     nezmizela v tintu okolo. */
+  .morphglass-well-primary {
+    background: linear-gradient(
+      145deg,
+      rgba(28, 161, 223, 0.95) 0%,
+      rgba(10, 102, 150, 0.95) 100%
+    );
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    backdrop-filter: blur(8px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -2px 6px rgba(5, 26, 38, 0.22),
+      0 4px 10px -3px rgba(11, 128, 186, 0.35);
+    transition:
+      background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .morphglass {
+      background: rgba(255, 255, 255, 0.94);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .morphglass-primary {
+      background: rgba(224, 242, 254, 0.96);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+/* ── Morphglass: buttons ─────────────────────────────────────
+   Same optics as .morphglass, retuned for pill-sized elements.
+
+   The card recipe carries a 40px drop shadow, which under a 48px-tall button
+   reads as a puddle rather than lift, so the outer shadows are pulled in. The
+   inner glow is tightened for the same reason: on a small element a 12px
+   bottom glow washes across the whole pill instead of pooling at its base. */
+@layer utilities {
+  .morphglass-btn {
+    position: relative;
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.27) 45%,
+        rgba(240, 249, 255, 0.17) 100%
+      );
+    -webkit-backdrop-filter: blur(18px) saturate(190%);
+    backdrop-filter: blur(18px) saturate(190%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 8px rgba(11, 128, 186, 0.06),
+      0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 10px 22px -8px rgba(5, 26, 38, 0.2),
+      0 2px 6px -2px rgba(5, 26, 38, 0.09);
+    transition:
+      background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .morphglass-btn:hover {
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.64) 0%,
+        rgba(255, 255, 255, 0.4) 45%,
+        rgba(240, 249, 255, 0.28) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -1px 10px rgba(11, 128, 186, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.24),
+      0 14px 30px -10px rgba(5, 26, 38, 0.26),
+      0 4px 10px -4px rgba(5, 26, 38, 0.11);
+  }
+
+  /* Primary action: the same glass, cast in the brand colour so the call to
+     action keeps its rank against the clear variant next to it.
+
+     Alpha stays high (0.88–0.95) on purpose. These pills sit over the hero
+     photograph as well as over flat white, and a thinner tint would let the
+     backdrop swing the fill far enough to drop white label text out of
+     contrast on the lighter parts of the image. */
+  .morphglass-btn-primary {
+    position: relative;
+    color: #fff;
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(28, 161, 223, 0.88) 0%,
+        rgba(11, 128, 186, 0.92) 45%,
+        rgba(10, 102, 150, 0.95) 100%
+      );
+    -webkit-backdrop-filter: blur(18px) saturate(190%);
+    backdrop-filter: blur(18px) saturate(190%);
+    box-shadow:
+      inset 1px 1px 0 rgba(255, 255, 255, 0.5),
+      inset -1px -1px 0 rgba(5, 26, 38, 0.22),
+      inset 0 -1px 10px rgba(5, 26, 38, 0.14),
+      0 10px 24px -8px rgba(11, 128, 186, 0.45),
+      0 2px 6px -2px rgba(5, 26, 38, 0.12);
+    transition:
+      background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .morphglass-btn-primary:hover {
+    background:
+      radial-gradient(
+        120% 90% at 0% 0%,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0) 58%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(56, 200, 248, 0.92) 0%,
+        rgba(28, 161, 223, 0.95) 45%,
+        rgba(11, 128, 186, 0.97) 100%
+      );
+    box-shadow:
+      inset 1px 1px 0 rgba(255, 255, 255, 0.65),
+      inset -1px -1px 0 rgba(5, 26, 38, 0.26),
+      inset 0 -1px 12px rgba(5, 26, 38, 0.18),
+      0 16px 34px -10px rgba(11, 128, 186, 0.55),
+      0 4px 10px -4px rgba(5, 26, 38, 0.14);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .morphglass-btn {
+      background: rgba(255, 255, 255, 0.94);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .morphglass-btn-primary {
+      background: var(--color-primary-600);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

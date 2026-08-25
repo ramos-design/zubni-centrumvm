@@ -1,25 +1,26 @@
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import Services from './components/Services';
-import Team from './components/Team';
-import Expertise from './components/Expertise';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import type { ComponentType } from 'react';
+import PageV1 from './versions/v1/Page';
+import PageV2 from './versions/v2/Page';
+import PageV3 from './versions/v3/Page';
+import { VersionProvider, useVersion } from './versions/VersionContext';
+
+const PAGES: Record<string, ComponentType> = {
+  v1: PageV1,
+  v2: PageV2,
+  v3: PageV3,
+};
+
+function ActiveVersion() {
+  const { version } = useVersion();
+  const Page = PAGES[version] ?? PageV1;
+  // key = remount při přepnutí verze, ať se nemíchá stav mezi verzemi
+  return <Page key={version} />;
+}
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-primary-200 selection:text-primary-900 font-sans text-slate-800">
-      <Navbar />
-      <main>
-        <Hero />
-        <Features />
-        <Team />
-        <Services />
-        <Expertise />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <VersionProvider>
+      <ActiveVersion />
+    </VersionProvider>
   );
 }

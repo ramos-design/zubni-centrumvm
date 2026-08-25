@@ -103,7 +103,7 @@ export default function Hero() {
           >
             <a 
               href="#kontakt"
-              className="morphglass-btn-primary group inline-flex items-center gap-4 px-8 py-4 rounded-full"
+              className="morphglass-btn-primary group inline-flex items-center gap-4 px-8 py-4 rounded-sm"
             >
               <span className="text-sm font-semibold tracking-wide uppercase font-display">Objednat se</span>
               <Phone className="w-4 h-4 group-hover:scale-110 transition-transform duration-500" />
@@ -111,7 +111,7 @@ export default function Hero() {
             
             <a 
               href="#sluzby"
-              className="morphglass-btn group inline-flex items-center gap-3 px-8 py-4 rounded-full text-slate-800"
+              className="morphglass-btn group inline-flex items-center gap-3 px-8 py-4 rounded-sm text-slate-800"
             >
               <span className="text-sm font-semibold tracking-wide uppercase font-display">Naše služby</span>
               <MoveRight className="w-4 h-4 text-primary-600 group-hover:translate-x-1.5 transition-transform duration-300" />
@@ -152,9 +152,9 @@ export default function Hero() {
                   ease: SLIDE_EASE,
                   opacity: { delay: 0.5, duration: 0.35, ease: 'easeOut' },
                 }}
-                className="morphglass morphglass-hover p-5 rounded-3xl w-[280px] flex items-center gap-4 shrink-0"
+                className="morphglass morphglass-hover p-5 rounded-md w-[280px] flex items-center gap-4 shrink-0"
               >
-                <div className="morphglass-well w-12 h-12 rounded-full text-primary-600 flex items-center justify-center shrink-0">
+                <div className="morphglass-well w-12 h-12 rounded-sm text-primary-600 flex items-center justify-center shrink-0">
                   <feature.icon className="w-6 h-6" />
                 </div>
                 <div>
